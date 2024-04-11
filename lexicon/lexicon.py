@@ -15,7 +15,7 @@ LEXICON: dict[str, str] = {
     "raspr": "Распределить роли",
     "start": "Раздать роли",
     "clear": "Очистить",
-    "jim": "Нажмите",
+    "jim": "Роль",
     "leavel": "Назад",
     "mir": "Мирный {}",
     "maf": "Мафия {}",
@@ -24,6 +24,7 @@ LEXICON: dict[str, str] = {
     "doc": "Доктор {}",
     "bab": "Бабочка {}",
     "rol": ["mir", "maf", "sher", "det", "doc", "bab"],
+    None:'неизвестна   '
 }
 
 LEXICON_COMMANDS: dict[str, str] = {"/start": "Начало", "/help": "Помощь"}

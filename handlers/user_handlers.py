@@ -50,7 +50,7 @@ async def onl(callback: CallbackQuery):
     )
 
 
-@router.callback_query(F.data.in_(("join")))
+@router.callback_query(F.data == "join")
 async def process_offline_press(callback: CallbackQuery):
     sp.append(
         (
@@ -61,13 +61,13 @@ async def process_offline_press(callback: CallbackQuery):
     )
     if len(sp) == 1:
         await callback.message.edit_text(
-            text=LEXICON["lider"],
+            text=LEXICON["lider"].format(len(sp) - 1),
             reply_markup=create_keyb("leave", "clear", "raspr", "start"),
         )
     else:
         await callback.message.edit_text(
             text=LEXICON["in_lobby"].format(callback.data),
-            reply_markup=create_keyb("leave"),
+            reply_markup=create_keyb("leave", "jim"),
         )
 
 
@@ -98,22 +98,18 @@ async def process_offline_press(callback: CallbackQuery):
 @router.callback_query(F.data == "jim")
 async def process_offline_press(callback: CallbackQuery):
     await callback.answer(
-        f"Ваша роль: {LEXICON[sl_rol[callback.from_user.id]][:-3]}", show_alert=True
+        f"Ваша роль: {LEXICON[sl_rol.get(callback.from_user.id)][:-3]}",
+        show_alert=True,
     )
 
 
 @router.callback_query(F.data == "start")
 async def process_offline_press(callback: CallbackQuery):
-    if sum(sl.values()) != len(sp):
+    if sum(sl.values()) != len(sp) - 1:
         await callback.message.answer(text="Кол-во ролей неравно кол-ву игроков!")
     else:
         sl_rol.clear()
-        for igr, rol in zip(sp, rols(sl)):
-            await bot.send_message(
-                chat_id=igr[1],
-                text="Нажмите, чтобы узнать роль!",
-                reply_markup=create_keyb("jim"),
-            )
+        for igr, rol in zip(sp[1:], rols(sl)):
             sl_rol[igr[1]] = rol
     await callback.answer()
 
