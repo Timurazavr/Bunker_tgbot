@@ -12,4 +12,5 @@ async def send_answer(message: Message):
 
 @router.callback_query()
 async def process_offline_press(callback: CallbackQuery):
+    print(type(callback.data), callback.data)
     await callback.answer()

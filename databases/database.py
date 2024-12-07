@@ -1,22 +1,27 @@
 import sqlite3
 
 
-def add_user(username: str, chat_id: int, last_message_id: int):
-    fl = username in get_row("username")
+def set_pole(username: str, name: str, value):
     con = sqlite3.connect("databases/db.sqlite")
     cur = con.cursor()
-    if fl:
-        cur.execute(
-            f"""UPDATE Users
-            SET last_message_id = {last_message_id},
-                chat_id = {chat_id}
+    cur.execute(
+        f"""UPDATE Users
+            SET {name} = {repr(value)}
             WHERE username = '{username}'"""
-        )
-    else:
-        cur.execute(
-            f"""INSERT INTO Users(username, chat_id, last_message_id)
-                VALUES('{username}', {chat_id}, {last_message_id})"""
-        )
+    )
+
+    con.commit()
+    con.close()
+
+
+def add_user(username: str):
+    con = sqlite3.connect("databases/db.sqlite")
+    cur = con.cursor()
+
+    cur.execute(
+        f"""INSERT INTO Users(username)
+                VALUES('{username}')"""
+    )
     con.commit()
     con.close()
 
@@ -37,8 +42,9 @@ def set_in_game(username: str, in_game: int):
     cur = con.cursor()
     cur.execute(
         f"""UPDATE Users
-            SET in_game = {in_game}
-            WHERE username = '{username}'"""
+            SET in_game = ?
+            WHERE username = '{username}'""",
+        (in_game,),
     )
     con.commit()
     con.close()

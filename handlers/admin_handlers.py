@@ -6,7 +6,6 @@ from aiogram.types import (
     InlineKeyboardMarkup,
 )
 from lexicon.lexicon import LEXICON
-from services.services import sp
 from secret import ADMIN_IDS
 from keyboards.pagination_kb import create_keyb
 from databases.database import get_row
